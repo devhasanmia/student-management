@@ -5,11 +5,22 @@ const StudentSchema = new Schema({
         type: String,
         required: true,
     },
+    father:{
+        type: String,
+        required: true
+    },
+    mother:{
+        type: String,
+        required: true
+    },
     age: {
         type: String,
         required: true
     },
-    group: {
+    photo:{
+        type: String
+    },
+    studentClass: {
         type: String,
         required: true,
         enum: ["One", "Two", "Three", "Four", "Five"],
