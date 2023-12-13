@@ -6,9 +6,9 @@ const getAllStudents = async (req, res) => {
     try {
         const students = await Student.find();
         if (students.length === 0) {
-            return res.status(204).json({ message: "Students Not Found" });
+            return res.status(404).json({ message: "Students Not Found" });
         }
-        return res.status(200).json({ message: "Students retrieved successfully", Total: students.length, students});
+        return res.status(200).json({ message: "Students retrieved successfully", Total: students.length, students });
     } catch (error) {
         errorHandler(res, error);
     }
@@ -16,7 +16,12 @@ const getAllStudents = async (req, res) => {
 // Get a Specific Student by ID
 const getStudentById = async (req, res) => {
     try {
-    
+        const { id } = req.params;
+        const student = await Student.findById(id);
+        if (!student) {
+            return res.status(404).json({ message: "Student Not Found" })
+        }
+        return res.status(200).json({ message: "Student retrieved successfully", student })
     } catch (error) {
         errorHandler(res, error)
     }
@@ -42,17 +47,36 @@ const createStudent = async (req, res) => {
 // Update a Student by ID
 const updateStudentById = async (req, res) => {
     try {
-
+        const { id } = req.params;
+        const { name } = req.body;
+        if (!name) {
+            return res.status(400).json({ message: "Name is required for updating a student" });
+        }
+        const student = await Student.findById(id);
+        if (!student) {
+            return res.status(404).json({ message: "Student Not Found" });
+        }
+        const updatedStudent = await Student.findByIdAndUpdate(id, { name }, { new: true });
+        return res.status(200).json({ message: "Student Updated Successfully", student: updatedStudent });
     } catch (error) {
-        errorHandler(res, error)
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
     }
-}
+};
+
+
 // Delete a Student by ID
 const deleteStudentById = async (req, res) => {
     try {
+        const { id } = req.params;
+        const student = await Student.findByIdAndDelete(id);
 
+        if (!student) {
+            return res.status(404).json({ message: "Student Not Found" });
+        }
+        return res.status(200).json({ message: "Student Deleted Successfully" });
     } catch (error) {
-        errorHandler(res, error)
+        errorHandler(res, error);
     }
 }
 

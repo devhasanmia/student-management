@@ -8,8 +8,8 @@ const {
 } = require('../controllers/student');
 
 router.get('/', getAllStudents);
-router.get('/:id', getStudentById);
 router.put('/:id', updateStudentById);
+router.get('/:id', getStudentById);
 router.post('/', createStudent);
 router.delete('/:id', deleteStudentById);
 

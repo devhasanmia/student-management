@@ -1,7 +1,6 @@
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const Teacher = require('../model/Teacher');
-
 dotenv.config();
 
 const authenticate = async (req, res, next) => {
